@@ -19,6 +19,9 @@ def send_message(request):
         return f"Ran into an issue.... {str(e)}"
 
 
-def cloud_function(request):
+def cloud_function(request, *args, **kwargs):
+    print("REQUEST:", request)
+    print("ARGS:", *args)
+    print("KWARGS:", **kwargs)
     return send_message(request)
 
