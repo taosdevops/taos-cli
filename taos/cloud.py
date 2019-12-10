@@ -1,4 +1,6 @@
-def hello_world(request):
+from taos.email import send_message
+
+def send_message(request):
     """Responds to any HTTP request.
     Args:
         request (flask.Request): HTTP request object.
@@ -8,12 +10,12 @@ def hello_world(request):
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
     request_json = request.get_json()
-    if request.args and "message" in request.args:
-        return request.args.get("message")
-    elif request_json and "message" in request_json:
-        return request_json["message"]
-    else:
-        return f"Hello World!"
+    try:
+        name = request_json["name"]
+        email = request_json["email"]
+        service_type = request_json["service_type"]
+        return send_message(name, email, service_type)
+
 
 def cloud_function(request, *args, **kwargs):
-    return hello_world(request)
+    return send_message(request)
