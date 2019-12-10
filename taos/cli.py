@@ -1,6 +1,7 @@
 import click
 from taos.web import scrape
 
+
 @click.group()
 @click.pass_context
 def main(ctx):
