@@ -3,18 +3,26 @@ name: CI
 on:
   push:
     branches:
-    - master
+      - feat/cloud-email
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+      - uses: actions/checkout@v1
+      - name: Run a one-line script
+        run: echo Hello, world!
+      - name: Run a multi-line script
+        run: |
+          gcloud auth activate-service-account --key-file=${GCP_KEY}
+          gcloud config set project ${GCP_PROJECT}
+          gcloud functions deploy harvest_reports \
+            --runtime python37 --trigger-topic dailyReport \
+            --set-env-vars=SEND_GRID_API_KEY=${SEND_GRID_API_KEY},SUPPORT_EMAIL=${SUPPORT_EMAIL},CONTACT_EMAIL=${CONTACT_EMAIL}
+        env:
+          GCP_KEY: ${{ secrets.GCP_KEY }}
+          GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+          SEND_GRID_API_KEY: ${{ secrets.SEND_GRID_API_KEY }}
+          SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
