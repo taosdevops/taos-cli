@@ -17,7 +17,7 @@ jobs:
           gcloud auth activate-service-account --key-file=/tmp/gcpkey.json
           gcloud config set project ${GCP_PROJECT}
           gcloud functions deploy taos-cli-contact  \
-            --runtime python37 --trigger-http       \
+            --runtime python37 --trigger-http --entry-point taos.cloud.hello_world \
             --set-env-vars=SEND_GRID_API_KEY=${SEND_GRID_API_KEY},SUPPORT_EMAIL=${SUPPORT_EMAIL},CONTACT_EMAIL=${CONTACT_EMAIL}
         env:
           GCP_KEY: ${{ secrets.GCP_KEY }}
