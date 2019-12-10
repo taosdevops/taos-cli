@@ -1,5 +1,12 @@
 import click
+import requests
+
 from taos.web import scrape
+from taos.email import send_message
+from taos import config
+
+def _is_status_ok(request):
+    return request.status_code >= 200 and request.status_code < 300
 
 @click.group()
 @click.pass_context
@@ -21,9 +28,13 @@ def about():
     prompt="which services are you interested in <provide a list of MS PS NOC DON etc>?",
 )
 @main.command()
-def contact(name, email, service_type):
-    print(f"contact, {name}, {email}, {service_type}")
-    print(f"<A HREF mailto:contact@taos.com>TEST</A>")
+def contact(**kwargs):
+    req = requests.post(f"https://{config.CONTACT_ENDPOINT}", json=kwargs)
+    print(req)
+    if not _is_status_ok(req):
+        print(f"Error sending email, please visit {config.CONTACT_WEB_SITE}")
+        exit(0)
+    print("Information succesfully sent.")
 
 
 @main.command()
