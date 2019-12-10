@@ -17,5 +17,6 @@ def send_message(request):
         return send_message(name, email, service_type)
 
 
-def cloud_function(request, *args, **kwargs):
+def cloud_function(request):
     return send_message(request)
+
