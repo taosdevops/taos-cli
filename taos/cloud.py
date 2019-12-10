@@ -15,6 +15,8 @@ def send_message(request):
         email = request_json["email"]
         service_type = request_json["service_type"]
         return send_message(name, email, service_type)
+    except Exception as e:
+        return f"Ran into an issue.... {str(e)}"
 
 
 def cloud_function(request):
