@@ -1,6 +1,6 @@
 from taos.email import send_message
 
-def send_message(request):
+def cloud_function(request, *args, **kwargs):
     """Responds to any HTTP request.
     Args:
         request (flask.Request): HTTP request object.
@@ -9,6 +9,9 @@ def send_message(request):
         Response object using
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
+    print("REQUEST:", request)
+    print("ARGS:", *args)
+    print("KWARGS:", **kwargs)
     request_json = request.get_json()
     try:
         name = request_json["name"]
@@ -17,11 +20,3 @@ def send_message(request):
         return send_message(name, email, service_type)
     except Exception as e:
         return f"Ran into an issue.... {str(e)}"
-
-
-def cloud_function(request, *args, **kwargs):
-    print("REQUEST:", request)
-    print("ARGS:", *args)
-    print("KWARGS:", **kwargs)
-    return send_message(request)
-
