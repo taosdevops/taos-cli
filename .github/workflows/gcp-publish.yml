@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Log into gcp
         run: |
-          echo "$GCP_KEY" > /tmp/gcpkey.json
+          echo "${GCP_KEY}" > /tmp/gcpkey.json
           gcloud auth activate-service-account --key-file=/tmp/gcpkey.json
           gcloud config set project ${GCP_PROJECT}
           gcloud functions deploy harvest_reports \
