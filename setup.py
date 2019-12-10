@@ -15,7 +15,7 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        taos=taos.cli.main:main
+        taos=taos.cli:main
         """,
     classifiers=[
         "Programming Language :: Python :: 3",
