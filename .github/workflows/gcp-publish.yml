@@ -11,6 +11,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
+      - name: Set Requirements
+        run: mv serverless.requirements.txt requirements.txt
+
+      - name: Set Requirements
+        run: pip install -r requirements.txt
+
       - name: Log into gcp
         run: |
           echo "${GCP_KEY}" > /tmp/gcpkey.json
