@@ -18,7 +18,6 @@ jobs:
 
       - name: Setup Git
         run: |
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           git checkout feat/docs
 
           git config --global user.email "DevOpsNow@taos.com"
