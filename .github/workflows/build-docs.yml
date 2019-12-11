@@ -26,6 +26,8 @@ jobs:
 
       - name: Publish
         run: |
-          git add -f docs \
-            && git commit -m "Compile Sphinx Documentation" \
-            && git push
+          git config --global user.email "DevOpsNow@taos.com"
+          git config --global user.name "Sphinx Docs Builder"
+          git add -f docs
+          git commit -m "Compile Sphinx Documentation"
+          git push
