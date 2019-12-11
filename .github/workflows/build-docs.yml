@@ -34,4 +34,4 @@ jobs:
           git add -f docs
           git commit -m "Compile Sphinx Documentation"
 
-          git push origin ${GITHUB_HEAD_REF}
+          git push origin HEAD:${GITHUB_HEAD_REF}
