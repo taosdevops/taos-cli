@@ -1,9 +1,9 @@
-name: CI
+name: Publish Cloud functions to GCP
 
 on:
   push:
     branches:
-      - feat/cloud-email
+      - master
 
 jobs:
   build:
