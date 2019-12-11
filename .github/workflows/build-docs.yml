@@ -16,13 +16,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Requirements
-        run: |
-          pip install -r dev.requirements.txt
-
-      - name: Clean and Regenerate Docs
-        run: rm -rf docs/* && python -m sphinx .docs docs
-
       - name: Setup Git
         run: |
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
@@ -31,9 +24,17 @@ jobs:
           git config --global user.email "DevOpsNow@taos.com"
           git config --global user.name "Sphinx Docs Builder"
 
-      - name: Add Docs
+      - name: Install Requirements
         run: |
-          git add -f docs
-          git commit -m "Compile Sphinx Documentation"
+          pip install -r dev.requirements.txt
 
+      - name: Clean and Regenerate Docs
+        run: rm -rf docs/* && python -m sphinx .docs docs && git add -f docs
+
+      - name: Debug
+        run: echo "git push origin ${GITHUB_HEAD_REF}"
+
+      - name: Push Update
+        run: |
+          git commit -m "Compile Sphinx Documentation"
           git push origin ${GITHUB_HEAD_REF}
