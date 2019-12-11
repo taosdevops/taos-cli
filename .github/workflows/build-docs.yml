@@ -1,0 +1,31 @@
+name: Build Sphinx Docs
+
+on:
+  push:
+    branches:
+      - feat/docs
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.x"
+
+      - name: Set & Install Requirements
+        run: |
+          mv dev.requirements.txt requirements.txt
+          pip install -r requirements.txt
+
+      - name: Clean and Regenerate Docs
+        run: rm -rf docs/* && python -m sphinx .docs docs
+
+      - name: Publish
+        run: |
+          git add -f docs \
+            && git commit -m "Compile Sphinx Documentation" \
+            && git push
