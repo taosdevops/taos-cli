@@ -26,10 +26,12 @@ jobs:
 
       - name: Publish
         run: |
-          git remote add github "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git pull github ${GITHUB_REF} --ff-only
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git          git pull github ${GITHUB_REF} --ff-only
+
           git config --global user.email "DevOpsNow@taos.com"
           git config --global user.name "Sphinx Docs Builder"
+
           git add -f docs
           git commit -m "Compile Sphinx Documentation"
-          git push github HEAD:${GITHUB_REF}
+
+          git push origin ${GITHUB_REF}
