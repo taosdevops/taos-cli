@@ -1,0 +1,4 @@
+Click==7.0
+Sphinx==2.2.2
+sphinx-rtd-theme==0.4.3
+sphinx-click==2.3.1
