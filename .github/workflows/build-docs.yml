@@ -23,15 +23,12 @@ jobs:
       - name: Clean and Regenerate Docs
         run: rm -rf docs/* && python -m sphinx .docs docs && git add -f docs
 
-      - name: Push Update
+      - name: Commit files
         run: |
           git config --global user.email "DevOpsNow@taos.com"
           git config --global user.name "Sphinx Docs Builder"
 
           git commit -m "Compile Sphinx Documentation"
-          git push
-
-          ssh-agent -k
 
       - name: Push changes
         uses: ad-m/github-push-action@master
