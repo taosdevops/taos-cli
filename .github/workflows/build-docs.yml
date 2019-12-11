@@ -17,11 +17,19 @@ jobs:
           python-version: "3.x"
 
       - name: Setup Git
+        env:
+          GITHUB_ACTIONS_DEPLOY_KEY: ${{ secrets.GITHUB_ACTIONS_DEPLOY_KEY }}
         run: |
           git checkout feat/docs
 
           git config --global user.email "DevOpsNow@taos.com"
           git config --global user.name "Sphinx Docs Builder"
+
+          git remote set-url origin "$(git config --get remote.origin.url | sed 's#http.*com/#git@github.com:#g')"
+          eval `ssh-agent -t 60 -s`
+          echo "${GITHUB_ACTIONS_DEPLOY_KEY}" | ssh-add -
+          mkdir -p ~/.ssh/
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: Install Requirements
         run: |
@@ -34,3 +42,5 @@ jobs:
         run: |
           git commit -m "Compile Sphinx Documentation"
           git push
+
+          ssh-agent -k
