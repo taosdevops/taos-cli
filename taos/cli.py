@@ -6,7 +6,9 @@ from taos.email import send_message
 from taos import config
 
 def _is_status_ok(request):
-    return request.status_code >= 200 and request.status_code < 300
+    return request.status_code >= 200 and \
+            request.status_code < 300 and \
+            request.headers.get("X-Frame-Options") != "DENY"
 
 @click.group()
 @click.pass_context
