@@ -19,7 +19,7 @@ jobs:
       - name: Setup Git
         run: |
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          git checkout ${GITHUB_HEAD_REF}
+          git checkout feat/docs
 
           git config --global user.email "DevOpsNow@taos.com"
           git config --global user.name "Sphinx Docs Builder"
@@ -34,4 +34,4 @@ jobs:
       - name: Push Update
         run: |
           git commit -m "Compile Sphinx Documentation"
-          git push origin feat/docs
+          git push
