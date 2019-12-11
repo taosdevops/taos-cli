@@ -31,10 +31,7 @@ jobs:
       - name: Clean and Regenerate Docs
         run: rm -rf docs/* && python -m sphinx .docs docs && git add -f docs
 
-      - name: Debug
-        run: echo "git push origin $GITHUB_HEAD_REF"
-
       - name: Push Update
         run: |
           git commit -m "Compile Sphinx Documentation"
-          git push origin ${GITHUB_HEAD_REF}
+          git push origin feat/docs
