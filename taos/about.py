@@ -8,29 +8,24 @@ bs4_ignore_strings = [
   "\n", ' ', 'Download Taos Overview >'
 ]
 
+def _get_next(predicate, object_list):
+    return next(obj for obj in object_list if predicate(obj))
 
-def is_link(tag):
-    return (tag.name == 'a') and \
-            (tag.has_attr('href') and search_link in tag['href'])
 
 def is_leader(tag):
     #return leader h2 tag
     return (tag.name)
 
-def is_title(tag):
-    if tag.name != 'h2': return False
-    return (tag.name == 'h2') and \
-            (tag.has_attr('class'))
 
 def _cleanup(string: str):
     return string.replace("\xa0","")
+
 
 def get_about():
     """ Returns the content of the taos about page """
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
-    link = soup.find(is_link)
 
     header = soup.find('h2')
     content = [
@@ -38,7 +33,8 @@ def get_about():
         if item not in bs4_ignore_strings
     ]
 
-    return "\n".join(content)
+    return [*content,"", *get_leaders()]
+
 
 def get_leaders():
 
@@ -47,44 +43,44 @@ def get_leaders():
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
-    
 
-    return [
+    leaders = [
         "LEADER1","LEADER2","LEADER3"
     ]
+    return [f"- {leader}" for leader in leaders]
 
 
-def get_about_2():
-    """ Returns the content of the taos about page """
-    link = "https://taos.com/about/"
-    response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
-    soup = BeautifulSoup(response.text, "html.parser")
-    link = soup.find(is_link)
-
-    header = soup.find('h2')
-    header_content = "".join([item for item in header.parent.strings])
-    print(header.parent.div)
-    body_content = "".join([item for item in header.parent.div.strings])
-    return "\n".join([
-        header_content, body_content
-    ])
-
-def list_services():    
+def list_services():
     url = 'http://taos.com/'
     response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
-    is_services = lambda tag: tag.has_attr('href') and tag['href'] == '/services'
+    services_parent = soup.find(href='/services').parent
 
-    services_parent = soup.find(is_services).parent
+    return [
+        {"name":"","href":"/about"},
+        *[
+            {
+            "href": tag['href'],
+            "name": tag.span.text.strip()
+            } for tag in  services_parent.ul.select('li a')
+        ]
+    ]
 
-    return ["", *[
-        service for service in
-        services_parent.ul.strings
-        if service and service not in bs4_ignore_strings
-    ]]
+def get_service(service):
+    service_record=  _get_next(lambda item: item['name']==service, list_services())
+    return _parse_sub(service_record['href'])
 
+def _parse_sub(path:str):
+    url = 'http://taos.com'+ path
+    response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    title_tag = soup.find('h2')
+    title = title_tag.text
+    body = title_tag.parent.div.text
+    footer = f"\nTo find out more please visit {url}"
+
+    return [title, body, footer]
 
 if __name__ == "__main__":
-    print(
-        get_about_2()
-    )
+    pass
