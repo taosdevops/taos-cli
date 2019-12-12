@@ -1,8 +1,7 @@
 import click
 import requests
-from taos import bio
+from taos import bio, about
 import click 
-from taos import about
 
 
 @click.group()
