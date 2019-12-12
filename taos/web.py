@@ -1,23 +1,24 @@
 import urllib.request, requests
 import time
 from bs4 import BeautifulSoup
+from taos import config
 
-url = 'http://taos.com/contact-taos'
-response = requests.get(url)
+bs4_ignore_strings = [
+  "\n", ' '
+]
 
+url = 'http://taos.com/'
+response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
 soup = BeautifulSoup(response.text, "html.parser")
-soup.findAll('a')
+is_services = lambda tag: tag.has_attr('href') and tag['href'] == '/services'
 
-one_a_tag = soup.findAll("a")[36]
-link = one_a_tag["href"]
+services_parent = soup.find(is_services).parent
+# print(services_parent.ul) # Service List
 
-for i in range(36,len(soup.findAll('a'))+1):
-    one_a_tag = soup.findAll('a')[i]
-    link = one_a_tag['href']
-    download_url = 'http://taos.com/'+ link
-    urllib.request.urlretrieve(download_url)
-    time.sleep(1)
+services_list = [
+  service for service in
+  services_parent.ul.strings
+  if service and service not in bs4_ignore_strings
+]
 
-
-def scrape():
-    return
+print(services_list)
