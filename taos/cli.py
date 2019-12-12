@@ -2,6 +2,7 @@ import click
 import requests
 from taos import bio
 import click 
+from taos import about
 
 
 @click.group()
@@ -12,9 +13,9 @@ def main(ctx):
 
 
 @main.command()
-def about():
-    print("about")
-    scrape("urls")
+def about_get(link):
+    click.echo(f"{link} Who We Are \n")
+    click.echo(about.get_link(link)) 
 
 
 @click.option("--name", prompt="What is your name?")

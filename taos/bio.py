@@ -24,3 +24,7 @@ def get_user(user: str)-> dict:
         f"master/team-members/{user}.md"
     )
     return requests.get(url).content
+
+def get_link(link: str):
+    url = "https:taos.com/about/"
+    return requestsget(link) 
