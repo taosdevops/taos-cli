@@ -1,5 +1,7 @@
 import click
-from taos.web import scrape
+import requests
+from taos import bio
+from taos.web import click
 
 
 @click.group()
@@ -32,11 +34,12 @@ def subscribe():
     print("subscribe")
 
 
-@main.command()
-def bio():
-    print("bio")
+@main.command("bio")
+@click.argument("user", type=click.Choice(bio.list_persons()))
 
+def bio_get(user):
 
-@main.command()
-def subscribe():
-    print("subscribe")
+    """ Lookup Taos personell bio information. """
+
+    click.echo(f"{user} BIO \n")
+    click.echo(bio.get_user(user))
