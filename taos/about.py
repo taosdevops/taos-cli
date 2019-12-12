@@ -13,9 +13,12 @@ def is_link(tag):
     return (tag.name == 'a') and \
             (tag.has_attr('href') and search_link in tag['href'])
 
+def is_leader(tag):
+    #return leader h2 tag
+    return (tag.name)
+
 def is_title(tag):
     if tag.name != 'h2': return False
-    # print(tag)
     return (tag.name == 'h2') and \
             (tag.has_attr('class'))
 
@@ -38,6 +41,14 @@ def get_about():
     return "\n".join(content)
 
 def get_leaders():
+
+    # get h2 leader tag and the names/titles below
+
+    link = "https://taos.com/about/"
+    response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+
     return [
         "LEADER1","LEADER2","LEADER3"
     ]
