@@ -1,7 +1,7 @@
 import click
 import requests
 from taos import bio
-from taos.web import click
+import click 
 
 
 @click.group()
