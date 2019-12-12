@@ -3,7 +3,6 @@ import requests
 from taos import bio, about
 import click 
 
-
 @click.group()
 @click.pass_context
 def main(ctx):
@@ -11,10 +10,19 @@ def main(ctx):
     pass
 
 
-@main.command()
-def about_get(link):
+@main.command("about")
+@click.argument(
+    "link", default="",
+    # # Commenting out choices till we get a programmatic list of em
+    type=click.Choice(about.list_services())
+)
+def get_about(link):
+    """ Looking at Taos Who We Are """
+
     click.echo(f"{link} Who We Are \n")
-    click.echo(about.get_link(link)) 
+    click.echo(about.get_about())
+    click.echo()
+    click.echo('\n'.join([f"- {leader}" for leader in about.get_leaders()]))
 
 
 @click.option("--name", prompt="What is your name?")
