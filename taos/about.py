@@ -37,23 +37,25 @@ def get_about():
 
 
 def get_leaders():
+    def _build_leader(tag):
+        try:
+            name, title = tag.parent.select('div font')
+        except ValueError:
+            name = tag.parent.select('div font')[0]
+            title = tag.parent.select('div span')[0]
+        return {
+            "name":name.text,
+            "title":title.text
+        }
 
-    # get h2 leader tag and the names/titles below
-    
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
     link = soup.find(is_leader)
     header = soup.find('h2'=='leadership')
-    print(soup.select('div div h4'))
-    print(len(soup.select('div div h4')))
-    [
-        _leader_return(item)
-        for item in soup.select('div div h4')
-    ]
     return [
-        f"- {leader}" for leader in [
-        _leader_return(item)
+        f"- {leader['title']}: {leader['name']}" for leader in [
+        _build_leader(item)
         for item in soup.select('div div h4')
     ]]
 
