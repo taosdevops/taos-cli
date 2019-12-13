@@ -39,15 +39,23 @@ def get_about():
 def get_leaders():
 
     # get h2 leader tag and the names/titles below
-
+    
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
-
-    leaders = [
-        "LEADER1","LEADER2","LEADER3"
+    link = soup.find(is_leader)
+    header = soup.find('h2'=='leadership')
+    print(soup.select('div div h4'))
+    print(len(soup.select('div div h4')))
+    [
+        _leader_return(item)
+        for item in soup.select('div div h4')
     ]
-    return [f"- {leader}" for leader in leaders]
+    return [
+        f"- {leader}" for leader in [
+        _leader_return(item)
+        for item in soup.select('div div h4')
+    ]]
 
 
 def list_services():
