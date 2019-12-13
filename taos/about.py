@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from typing import List
 from taos import config
 import requests
+from click import style
 
 search_link = '/about/'
 bs4_ignore_strings = [
@@ -53,11 +54,14 @@ def get_leaders():
     soup = BeautifulSoup(response.text, "html.parser")
     link = soup.find(is_leader)
     header = soup.find('h2'=='leadership')
+
     return [
-        f"- {leader['title']}: {leader['name']}" for leader in [
-        _build_leader(item)
-        for item in soup.select('div div h4')
-    ]]
+        f"- {style(leader['title'], bold=True)}: {leader['name']}"
+        for leader in [
+            _build_leader(item)
+            for item in soup.select('div div h4')
+        ]
+    ]
 
 
 def list_services():
