@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from typing import List
 from taos import config
 import requests
+from click import style
 
 search_link = '/about/'
 bs4_ignore_strings = [
@@ -52,13 +53,11 @@ def get_leaders():
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
-    link = soup.find(is_leader)
-    header = soup.find('h2'=='leadership')
     return [
-        f"- {leader['title']}: {leader['name']}" for leader in [
-        _build_leader(item)
-        for item in soup.select('div div h4')
-    ]]
+        f"- {style(leader['title'], bold=True)}: {leader['name']}"
+        for leader in
+        [ _build_leader(item) for item in soup.select('div div h4')]
+    ]
 
 def list_services():
     url = 'http://taos.com/'
@@ -103,6 +102,7 @@ def contact_info():
         'contactus@taos.com',
         '121 Daggett Drive',
         'San Jose, CA 95134',
+        'https://www.taos.com/contact-taos'
     ])
 
 
