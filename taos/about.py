@@ -24,7 +24,6 @@ def _cleanup(string: str):
 
 
 def get_about():
-    from taos import web 
     """ Returns the content of the taos about page """
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
@@ -36,7 +35,9 @@ def get_about():
         if item not in bs4_ignore_strings
     ]
 
-    print("*Run taos about (option) to get specific about pages")
+    print("*Run taos about (OPTION) to get specific about pages")
+    print("OPTIONS: ")
+    from taos import web
     return [*content, *get_leaders()]
 
 
