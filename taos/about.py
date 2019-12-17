@@ -4,6 +4,7 @@ from taos import config
 import requests
 from click import style
 
+
 search_link = '/about/'
 bs4_ignore_strings = [
   "\n", ' ', 'Download Taos Overview >'
@@ -23,6 +24,7 @@ def _cleanup(string: str):
 
 
 def get_about():
+    from taos import web 
     """ Returns the content of the taos about page """
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
@@ -34,7 +36,10 @@ def get_about():
         if item not in bs4_ignore_strings
     ]
 
-    return [*content,"", *get_leaders()]
+    print("*Run taos about (option) to get specific about pages")
+    return [*content, *get_leaders()]
+
+
 
 
 def get_leaders():
@@ -98,3 +103,4 @@ def _parse_sub(path:str):
 
 if __name__ == "__main__":
     pass
+
