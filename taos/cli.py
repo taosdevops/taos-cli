@@ -23,7 +23,7 @@ def get_about(link):
     click.echo()
     click.echo('\n'.join(body))
 
-
+click.echo(about.contact_info()) 
 @click.option("--name", prompt="What is your name?")
 @click.option("--email", prompt="What is your Email?")
 @click.option(
@@ -33,8 +33,9 @@ def get_about(link):
 @main.command()
 def contact(name, email, service_type):
     print(f"contact, {name}, {email}, {service_type}")
-    print(f"<A HREF mailto:contact@taos.com>TEST</A>")
-
+    print(f"<A HREF mailto:cmorrow@taos.com>TEST</A>")
+    
+   
 
 @main.command()
 def subscribe():
