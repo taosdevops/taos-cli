@@ -23,23 +23,31 @@ def get_about(link):
     click.echo()
     click.echo('\n'.join(body))
 
-click.echo(about.contact_info()) 
-@click.option("--name", prompt="What is your name?")
-@click.option("--email", prompt="What is your Email?")
 @click.option(
     "--service-type",
     prompt="which services are you interested in <provide a list of MS PS NOC DON etc>?",
 )
-@main.command()
-def contact(name, email, service_type):
-    print(f"contact, {name}, {email}, {service_type}")
-    print(f"<A HREF mailto:cmorrow@taos.com>TEST</A>")
-    
-   
+@click.option("--email", prompt="What is your Email?")
+@click.option("--name", prompt="What is your name?")
 
-@main.command()
-def subscribe():
-    print("subscribe")
+
+@main.command('contact')
+def contact(name, email, service_type):
+    click.echo(about.contact_info())
+    #need to figure out how we are actually going to send the email
+    print(f"contact, {name}, {email}, {service_type}")
+    # print(f"<A HREF mailto:cmorrow@taos.com>TEST</A>")
+
+    
+@click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
+@click.option("--email", prompt="What is your Email?")
+@click.option("--name", prompt="What is your name?")
+
+
+
+@main.command('subscribe')
+def subscribe(name, email, hours):
+    print(f"subscribe, {name}, {email}, {hours}")
 
 
 @main.command("bio")
