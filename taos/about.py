@@ -3,6 +3,7 @@ from typing import List
 from taos import config
 import requests
 from click import style
+import re
 
 
 search_link = '/about/'
@@ -75,6 +76,7 @@ def list_services():
     response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
     services_parent = soup.find(href='/services').parent
+   # re.sub(r'[^\x00-\x7F]+',' ', ' ')
 
     return [
         {"name":"","href":"/about"},
