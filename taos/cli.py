@@ -11,17 +11,13 @@ def _is_status_ok(request):
             request.status_code < 300 and \
             request.headers.get("X-Frame-Options") != "DENY"
 
+
+
 @click.group()
 @click.pass_context
 def main(ctx):
     """ Taos cli command """
     pass
-
-
-# @main.command()
-# def about():
-#     print("about")
-#     scrape("urls")
 
 
 @click.option("--name", prompt="What is your name?")
@@ -30,8 +26,11 @@ def main(ctx):
     "--service-type",
     prompt="which services are you interested in <provide a list of MS PS NOC DON etc>?",
 )
+
+
 @main.command()
 def contact(**kwargs):
+    print('Taos Contact info:', '888-826-7686','121 Daggett Drive','San Jose, CA 95134')
     req = send_message(**kwargs)
     print(req)
 
