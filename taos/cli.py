@@ -38,7 +38,8 @@ def contact(name, email, service_type):
     print(f"contact, {name}, {email}, {service_type}")
     # print(f"<A HREF mailto:cmorrow@taos.com>TEST</A>")
 
-    
+@click.option("--communication", prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)")
+@click.option("--length", prompt="Length of Service?")
 @click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
 @click.option("--email", prompt="What is your Email?")
 @click.option("--name", prompt="What is your name?")
@@ -46,8 +47,8 @@ def contact(name, email, service_type):
 
 
 @main.command('subscribe')
-def subscribe(name, email, hours):
-    print(f"subscribe, {name}, {email}, {hours}")
+def subscribe(name, email, hours, length, communication):
+    print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
 
 
 @main.command("bio")
