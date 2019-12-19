@@ -4,7 +4,7 @@ from taos import config
 import requests
 from click import style
 import re
-
+import string
 
 search_link = '/about/'
 bs4_ignore_strings = [
@@ -70,24 +70,28 @@ def get_leaders():
         ]
     ]
 
+def _clean_service_name(name:str)->str:
+    return name.replace("™", "").strip()\
+        .replace("&", "and").replace(" ","-").lower()
 
 def list_services():
     url = 'http://taos.com/'
     response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
     services_parent = soup.find(href='/services').parent
+    
 
     return [
         {"name":"","href":"/about"},
         *[
             {
-            "href": tag['href'],
-            "name": tag.span.text.strip(re.sub(r'[^\u0000-\u007F]+',' ', str(soup)))
+                "href": tag['href'],
+                "name": _clean_service_name(tag.span.text)
             } for tag in  services_parent.ul.select('li a')
-            
         ]
     ]
-    
+
+
 
 def get_service(service):
     service_record=  _get_next(lambda item: item['name']==service, list_services())
