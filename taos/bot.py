@@ -1,13 +1,14 @@
 import os
 import slack
 from pprint import pprint
-from taos import bio
+from taos import bio, about
 
 slack_token = os.environ["SLACK_API_TOKEN"]
 bot_data = slack.WebClient(token=slack_token).auth_test()
 bot_string = f"<@{bot_data['user_id']}>"
 
 bio_users = bio.list_persons()
+about_services =[ service['name'] for service in about.list_services() ]
 
 partial_commands = {}
 print("BOT Running")
@@ -125,9 +126,26 @@ def continuer(command_name, data, **payload):
 
 
 @respond_to_slack
-def _parse_about(command, **payload):
-    return f"What do you want to know about?"
+def _parse_about(command_name, *args, **payload):
+    if len(args) < 1:
+        partial_commands[_get_thread(payload)] = {"command_name": "about"}
+        print("Partial", partial_commands)
+        return f"What do you want to know about?"
 
+    services_found = [service for service in args if service in about_services]
+    if len(services_found) < 1:
+        return "\n".join(
+            [
+                "Sorry we couldnt locate that service.",
+                "These are the services that I could find.",
+                *[f"- {service}" for service in about_services],
+            ]
+        )
+    _parse_service = lambda items: "\n".join(items)
+    return [
+        _parse_service(about.get_service(service))
+        for service in services_found
+    ]
 
 @respond_to_slack
 def _parse_bio(command_name, *args, **payload):
@@ -150,7 +168,7 @@ def _parse_bio(command_name, *args, **payload):
 
 
 botcommands = {
-    # "about": _parse_about,
+    "about": _parse_about,
     "bio": _parse_bio
 }
 
