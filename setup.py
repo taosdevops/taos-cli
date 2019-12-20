@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     author="TAOS DevopsNow",
     name="taos",
-    email="devopsnow@taos.com",
+    author_email="devopsnow@taos.com",
     description="Taos Command Line",
     #license=open("LICENSE").read(),
     long_description=open("README.md").read(),
