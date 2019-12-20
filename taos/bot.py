@@ -14,11 +14,11 @@ print("BOT Running")
 print("BOT Info", bot_data)
 
 
-def _is_thread_reply(payload):
+def _is_thread_reply(payload: dict)-> bool:
     return "thread_ts" in payload.get("data", {})
 
 
-def _get_thread(payload):
+def _get_thread(payload: dict)-> str:
     data = payload.get("data", {})
     return data.get("thread_ts") or data.get("ts")
 
