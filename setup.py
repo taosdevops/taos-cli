@@ -9,7 +9,7 @@ setup(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
-    version="1.0.1",
+    version="1.1.0",
     url="https://github.com/taosdevops/taos",
     install_requires=[
         "Click==7.0",
