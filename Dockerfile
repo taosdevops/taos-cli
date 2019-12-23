@@ -1,11 +1,11 @@
 from python:3
 
-COPY taos /app/taos
-COPY container.requirements.txt /app/
-
 WORKDIR /app
 
+COPY container.requirements.txt /app/
 RUN pip install -r container.requirements.txt
+
+COPY taos /app/taos
 
 ENTRYPOINT ["python"]
 CMD [ "-m", "taos.bot" ]
