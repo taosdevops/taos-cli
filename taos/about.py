@@ -12,6 +12,8 @@ bs4_ignore_strings = [
   "\n", ' ', 'Download Taos Overview >'
 ]
 
+def _bold(string:str)->str: return style(string, bold=True)
+
 def _get_next(predicate, object_list):
     return next(obj for obj in object_list if predicate(obj))
 
@@ -25,7 +27,7 @@ def _cleanup(string: str):
     return string.replace("\xa0","")
 
 
-def get_about():
+def get_about(bold=False):
     """ Returns the content of the taos about page """
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
@@ -37,15 +39,12 @@ def get_about():
         if item not in bs4_ignore_strings
     ]
 
-    print("*Run taos about (OPTION) to get specific about pages")
-    print("OPTIONS: ")
-    from taos import web
-    return [*content, *get_leaders()]
+    return [*content, *get_leaders(bold=bold)]
 
 
 
 
-def get_leaders():
+def get_leaders(bold=False):
     def _build_leader(tag):
         try:
             name, title = tag.parent.select('div font')
@@ -61,10 +60,9 @@ def get_leaders():
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
     link = soup.find(is_leader)
-    #header = soup.find('h2'=='leadership')
 
     return [
-        f"- {style(leader['title'], bold=True)}: {leader['name']}"
+        f"- {_bold(leader['title']) if bold else leader['title']}: {leader['name']}"
         for leader in [
             _build_leader(item)
             for item in soup.select('div div h4')
@@ -80,7 +78,7 @@ def list_services():
     response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
     services_parent = soup.find(href='/services').parent
-    
+
 
     return [
         {"name":"","href":"/about"},
@@ -91,6 +89,9 @@ def list_services():
             } for tag in  services_parent.ul.select('li a')
         ]
     ]
+
+def list_service_names():
+    return [service['name'] for service in list_services()]
 
 
 
@@ -112,6 +113,3 @@ def _parse_sub(path:str):
 
 def contact_info():
     return " 'Contact info': 'Phone: '888-826-7686', 'contactus@taos.com', '121 Daggett Drive','San Jose, CA 95134'"
-
-if __name__ == "__main__":
-    pass
