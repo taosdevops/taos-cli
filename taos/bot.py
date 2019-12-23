@@ -8,7 +8,10 @@ bot_data = slack.WebClient(token=slack_token).auth_test()
 bot_string = f"<@{bot_data['user_id']}>"
 
 bio_users = bio.list_persons()
-about_services =[ service['name'] for service in about.list_services() ]
+about_services =[
+    service['name'] for service in about.list_services()
+    if service.get('name') and service['name'] != ''
+]
 
 partial_commands = {}
 print("BOT Running")
@@ -127,23 +130,29 @@ def continuer(command_name, data, **payload):
 
 @respond_to_slack
 def _parse_about(command_name, *args, **payload):
+    newline_join = lambda items: "\n".join(items)
     if len(args) < 1:
+
         partial_commands[_get_thread(payload)] = {"command_name": "about"}
         print("Partial", partial_commands)
+        return newline_join([
+            "Thanks for asking about me.",
+            *about.get_about()
+        ])
         return f"What do you want to know about?"
 
     services_found = [service for service in args if service in about_services]
     if len(services_found) < 1:
         return "\n".join(
             [
-                "Sorry we couldnt locate that service.",
-                "These are the services that I could find.",
+                f"Sorry I dont know anything about {' '.join(args)}.",
+                "These are the services that I do know about.",
                 *[f"- {service}" for service in about_services],
             ]
         )
-    _parse_service = lambda items: "\n".join(items)
+
     return [
-        _parse_service(about.get_service(service))
+        newline_join(about.get_service(service))
         for service in services_found
     ]
 
