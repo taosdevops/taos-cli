@@ -22,6 +22,7 @@ jobs:
           pip install -r dev.requirements.txt
       - name: Install xenon
         run: |
+          pip3 install xenon
           xenon xenon -bB -mA -aA
       - name: Lint with flake8
         run: |
