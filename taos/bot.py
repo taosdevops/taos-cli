@@ -109,7 +109,6 @@ def fetch_partial(func):
         try:
             if payload:
                 partial_command = partial_commands[_get_thread(payload)]
-                print(":DEBUG::",partial_command)
                 return func(*args, partial=partial_command, **payload)
         except KeyError: pass
         return func(*args, payload=payload, **payload)
@@ -219,9 +218,9 @@ def _parse_bio(command_name, *args, **payload):
 @respond_to_slack
 @fetch_partial
 def _parse_contact(command_name, *args, parameters=None, partial=None, **payload):
-    print("Partial",partial)
-    print("Args", args)
-    print("Parameters", parameters)
+    # print("Partial",partial)
+    # print("Args", args)
+    # print("Parameters", parameters)
     params = {
         "email": "Email Address",
         "name": "Person to contact",
@@ -238,11 +237,9 @@ def _parse_contact(command_name, *args, parameters=None, partial=None, **payload
         for param in params.keys()
         if param in compiled
     }
-    print("valid1",valid)
 
     has_all_params = len(valid.keys()) == len(params.keys())
     already_sent = partial['state'].get('sent') == True if partial else False
-    print("Already Sent", already_sent)
 
     if len(args)> 0 and args[0] == "help":
         if already_sent:
@@ -263,26 +260,21 @@ def _parse_contact(command_name, *args, parameters=None, partial=None, **payload
             partial['state']['sent'] = True
 
         email.send_message(
-            valid.get("name"),
-            valid.get("email"),
-            valid.get("service-type")
+            email= valid.get("email"),
+            name= valid.get("name"),
+            service_type= valid.get("service-type")
         )
         return "Thanks for the notification request!"
 
-    if already_sent: # No need to build the object
+    if already_sent:
                 return
-
-    print("compiled",compiled)
-    print("valid",valid)
 
     if not partial:
         partial = {"command_name": "contact","params":valid,'state':{}}
-        print("Saving:",_get_thread(payload), partial)
         partial_commands[_get_thread(payload)] = partial
     else:
         partial['params'] = valid
 
-    print(":DEBUG:",partial['params'])
     if len(args) < 1: # Create partial and return instructions
         return (
             "\n".join([
@@ -299,7 +291,7 @@ def _parse_contact(command_name, *args, parameters=None, partial=None, **payload
         )
 
     if parameters:
-        return f"Thanks for providing {' '.join(parameters.keys())}."
+        return f"Thanks for providing: {', '.join(parameters.keys())}."
 
 botcommands = {
     "about": _parse_about,
