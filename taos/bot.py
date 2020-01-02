@@ -3,6 +3,11 @@ import slack
 from pprint import pprint
 from taos import bio, about, email
 import traceback
+from taosdevopsutils.slack import Bot
+import logging
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
+bot = Bot(os.environ["SLACK_API_TOKEN"], logger=logging)
 
 slack_token = os.environ["SLACK_API_TOKEN"]
 bot_data = slack.WebClient(token=slack_token).auth_test()
@@ -14,172 +19,16 @@ about_services =[
     if service.get('name') and service['name'] != ''
 ]
 
-partial_commands = {}
-print("BOT Running")
-print("BOT Info", bot_data)
 
-
-def _is_thread_reply(payload: dict)-> bool:
-    return "thread_ts" in payload.get("data", {})
-
-def _has_parameter(command_string: dict, param_prefix="--")-> bool:
-    return param_prefix in command_string
-
-def _parse_command_string(command_string: str):
-    pass
-    if _has_parameter(command_string):
-        command_string, *params = [
-            part.strip() for part in command_string.split("--")
-        ]
-        parameter = {
-            key :" ".join(values)
-            for param_string in params
-            for key, *values in [param_string.split(' ')]
-        }
-    else:
-        parameter = {}
-    return command_string, parameter
-
-def _get_thread(payload: dict)-> str:
-    data = payload.get("data", {})
-    return data.get("thread_ts") or data.get("ts")
-
-def _is_bot(data, **kwargs):
-    return "bot_id" in data and data["bot_id"] == bot_data["bot_id"]
-
-# Decorators
-def talking_to_me(func):
-    def _internal_(**payload):
-        data = payload["data"]
-        if not bot_string in data.get("text", []):
-            return
-        return func(**payload)
-
-    return _internal_
-
-
-def continue_partial(func):
-    def _internal_(*args, **payload):
-        if _is_bot(**payload) or not _is_thread_reply(payload):
-            return
-
-        try:
-            thread_id = _get_thread(payload)
-            command = partial_commands[thread_id]
-        except KeyError:
-            return
-
-        pprint({"ContinuePayload": payload})
-        return func(**payload, **command)
-
-    return _internal_
-
-
-def respond_to_slack(func):
-    def _internal_(*args, web_client=None, **kwargs):
-        try:
-            pprint(kwargs)
-            response = func(*args, **kwargs)
-
-            if not isinstance(response, list):
-                response = [response] if response else []
-
-            data = kwargs.get("data", {})
-            channel_id = data.get("channel")
-            thread_ts = data.get("ts")
-
-            for message in response:
-                try:
-                    message = message.decode()
-                except AttributeError:
-                    pass
-
-                web_client.chat_postMessage(
-                    channel=channel_id, text=message, thread_ts=thread_ts
-                )
-            return response
-        except Exception as e:
-            print(f"HIT Exception RESPOND:{e}")
-            print(traceback.format_exc())
-
-    return _internal_
-
-def fetch_partial(func):
-    def _internal_(*args, **payload):
-        try:
-            if payload:
-                partial_command = partial_commands[_get_thread(payload)]
-                return func(*args, partial=partial_command, **payload)
-        except KeyError: pass
-        return func(*args, payload=payload, **payload)
-    return _internal_
-
-# End Decorators
-
-@slack.RTMClient.run_on(event="message")
-@talking_to_me
-def processor(**payload):
-    data = payload["data"]
-    raw_command_text = data.get("text", "").strip()
-    commands = [ # Check all registered commands against text
-        command
-        for command, response in botcommands.items()
-        if f"{bot_string} {command}" in raw_command_text
-    ]
-
-    if len(commands) > 0:
-        # try:
-        #     raw_command_string = raw_command_text.split(bot_string)[1]
-        try:
-            raw_command_string = raw_command_text.split(bot_string)[1].strip()
-            # command_string = raw_command_text.split(bot_string)[1].strip()
-            command_string, parameters = _parse_command_string(raw_command_string)
-            botcommands[commands[0]](
-                *command_string.split(" "),parameters=parameters, **payload
-            )
-        except Exception as e:
-            print(e)
-
-    else:
-        web_client = payload["web_client"]
-        channel_id = data["channel"]
-        thread_ts = data["ts"]
-        web_client.chat_postMessage(
-            channel=channel_id, text=f"Where you talking to me?", thread_ts=thread_ts
-        )
-    return "ERROR"
-
-
-@slack.RTMClient.run_on(event="message")
-@continue_partial
-def continuer(command_name, data, **payload):
-    if _is_bot(data): print("BOT DETECTED") # For Debugging
-    raw_command_text = data.get("text", "").strip()
-    try:
-        raw_command_string = raw_command_text.split(bot_string)[1]
-        # command_string = data.get("text", "").split(bot_string)[1].strip()
-        command_string, parameters = _parse_command_string(raw_command_string)
-    except IndexError:
-        command_string, parameters = _parse_command_string(raw_command_text)
-
-    botcommands[command_name](
-        command_name, *command_string.split(" "),
-        data=data, parameters=parameters, **payload
-    )
-
-
-@respond_to_slack
-def _parse_about(command_name, *args, **payload):
+@bot.register("about")
+def _parse_about(command_name, *args, thread_id=None, **payload):
     newline_join = lambda items: "\n".join(items)
     if len(args) < 1:
-
-        partial_commands[_get_thread(payload)] = {"command_name": "about"}
-        print("Partial", partial_commands)
+        bot.partial_commands[thread_id] = {"command_name": "about"}
         return newline_join([
             "Thanks for asking about me.",
             *about.get_about()
         ])
-        return f"What do you want to know about?"
 
     services_found = [service for service in args if service in about_services]
     if len(services_found) < 1:
@@ -196,12 +45,10 @@ def _parse_about(command_name, *args, **payload):
         for service in services_found
     ]
 
-@respond_to_slack
-def _parse_bio(command_name, *args, **payload):
+@bot.register("bio")
+def _parse_bio(command_name, *args, thread_id=None, **payload):
     if len(args) < 1:
-        print(_get_thread(payload))
-        partial_commands[_get_thread(payload)] = {"command_name": "bio"}
-        print("Partial", partial_commands)
+        bot.partial_commands[thread_id] = {"command_name": "bio"}
         return "Whos bio would you like to see?"
 
     bios_found = [user for user in args if user in bio_users]
@@ -215,12 +62,15 @@ def _parse_bio(command_name, *args, **payload):
         )
     return [bio.get_user(user) for user in bios_found]
 
-@respond_to_slack
-@fetch_partial
-def _parse_contact(command_name, *args, parameters=None, partial=None, **payload):
-    # print("Partial",partial)
-    # print("Args", args)
-    # print("Parameters", parameters)
+
+@bot.register("contact")
+@bot.fetch_partial
+def _parse_contact(command_name, *args, thread_id=None, parameters=None, partial=None):
+    print("Partial",partial)
+    print("Args", args)
+    print("Parameters", parameters)
+    print("threadid", thread_id)
+    assert thread_id
     params = {
         "email": "Email Address",
         "name": "Person to contact",
@@ -271,7 +121,7 @@ def _parse_contact(command_name, *args, parameters=None, partial=None, **payload
 
     if not partial:
         partial = {"command_name": "contact","params":valid,'state':{}}
-        partial_commands[_get_thread(payload)] = partial
+        bot.partial_commands[thread_id] = partial
     else:
         partial['params'] = valid
 
@@ -293,15 +143,8 @@ def _parse_contact(command_name, *args, parameters=None, partial=None, **payload
     if parameters:
         return f"Thanks for providing: {', '.join(parameters.keys())}."
 
-botcommands = {
-    "about": _parse_about,
-    "bio": _parse_bio,
-    "contact": _parse_contact
-}
-
 def run_bot():
-    rtm_client = slack.RTMClient(token=slack_token)
-    rtm_client.start()
+    bot.start()
 
 if __name__ == "__main__":
     run_bot()
