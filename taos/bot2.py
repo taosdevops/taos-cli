@@ -143,12 +143,6 @@ def _parse_contact(command_name, *args, thread_id=None, parameters=None, partial
     if parameters:
         return f"Thanks for providing: {', '.join(parameters.keys())}."
 
-botcommands = {
-    "about": _parse_about,
-    "bio": _parse_bio,
-    "contact": _parse_contact
-}
-
 def run_bot():
     bot.start()
 
