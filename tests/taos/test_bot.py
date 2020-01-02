@@ -1,9 +1,13 @@
-from taos import bot
-from unittest import TestCase
+from unittest import TestCase, mock
 import pytest
 
+## Need to patch slack authentication for testing;
+with mock.patch("slack.WebClient") as mock_slack:
+    mock_slack.auth_test.return_value = {"taosdevopsutils.slack": "BOT"}
+    from taos import bot
 
 class TestTaosBotSlackActions:
+
     @pytest.mark.vcr()
     def test_taosbot_responds_about_taos(self, mocker):
         about_patch = mocker.patch.object(bot.about,"get_about")
@@ -52,7 +56,6 @@ class TestTaosBotSlackActions:
         assert response == bio_text
 
 
-    @pytest.mark.vcr()
     def test_taosbot_responds_bio_for_user(self, mocker):
         bio_patch = mocker.patch.object(bot.bio,"get_user")
         bio= "rmeyer-taos"
