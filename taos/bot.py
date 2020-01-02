@@ -1,17 +1,13 @@
 import os
 import slack
 from pprint import pprint
-from taos import bio, about, email
+from taos import bio, about, email, config
 import traceback
 from taosdevopsutils.slack import Bot
 import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
-bot = Bot(os.environ["SLACK_API_TOKEN"], logger=logging)
-
-slack_token = os.environ["SLACK_API_TOKEN"]
-bot_data = slack.WebClient(token=slack_token).auth_test()
-bot_string = f"<@{bot_data['user_id']}>"
+bot = Bot(config.SLACK_API_TOKEN, logger=logging)
 
 bio_users = bio.list_persons()
 about_services =[
