@@ -6,7 +6,7 @@ import traceback
 from taosdevopsutils.slack import Bot
 import logging
 
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 bot = Bot(config.SLACK_API_TOKEN, logger=logging)
 
 bio_users = bio.list_persons()
