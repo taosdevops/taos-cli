@@ -29,7 +29,7 @@ def send_message(email, name, message_type="contact", **kwargs):
 
     message = Mail(
         from_email=email,
-        to_emails=config.SUPPORT_EMAIL,
+        to_emails=config.CONTACT_EMAIL,
         subject=f"Contact Request from {name}",
         html_content=_get_email_string(
             email=email, name=name, message_type=message_type ,**kwargs
