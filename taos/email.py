@@ -26,7 +26,7 @@ def _get_email_string(message_type="contact", **kwargs):
 def send_message(email, name, message_type="contact", **kwargs):
     if "mailto" in email:
         email = email.split(':')[1].split('|')[0]
-    print(kwargs)
+
     message = Mail(
         from_email=email,
         to_emails=config.SUPPORT_EMAIL,
