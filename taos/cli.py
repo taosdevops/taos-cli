@@ -1,8 +1,7 @@
 import click
 import requests
-
-from taos.email import send_message, send_message2
 from taos import about, bio, config
+from taos.email import send_message
 
 
 @click.group()
@@ -19,11 +18,17 @@ def main(ctx):
 )
 def get_about(link):
     """ Looking at Taos Who We Are """
-    header, *body = about.get_about() if not link else about.get_service(link)
+    header, *body = about.get_about(bold=True) if not link else about.get_service(link)
     click.echo()
     click.echo(click.style(header, bold=True))
     click.echo()
     click.echo('\n'.join(body))
+    click.echo()
+    click.echo(
+        "We also provide a range of services, run taos about SERVICE for more."
+    )
+    click.echo('\n'.join(about.list_service_names()))
+
 
 
 @click.option(
@@ -36,18 +41,6 @@ def get_about(link):
 def contact(**kwargs):
     print('Taos Contact info:', '888-826-7686','121 Daggett Drive','San Jose, CA 95134')
     req = send_message(**kwargs)
-    print(req)
-
-
-@click.option("--communication", prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)")
-@click.option("--length", prompt="Length of Service?")
-@click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
-@click.option("--service-type", prompt="which services are you interested in <provide a list of MS PS NOC DON etc>?",)
-@click.option("--email", prompt="What is your Email?")
-@click.option("--name", prompt="What is your name?")
-@main.command()
-def subscribe(**kwargs):
-    req = send_message2(**kwargs)
     if req:
         print("Thanks for contacting taos!")
         return
@@ -57,6 +50,32 @@ def subscribe(**kwargs):
         "You can also visit https://www.taos.com/contact-taos to submit a request online."
     )
 
+@main.command('subscribe')
+def subscribe(name, email, hours, length, communication):
+    print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
+
+
+@click.option("--communication", prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)")
+@click.option("--length", prompt="Length of Service?")
+@click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
+@click.option("--service-type", prompt="which services are you interested in <provide a list of MS PS NOC DON etc>?",)
+@click.option("--email", prompt="What is your Email?")
+@click.option("--name", prompt="What is your name?")
+
+@main.command()
+def subscribe(**kwargs):
+    req = send_message(**kwargs,message_type="subscribe")
+    if req:
+        print("Thanks for contacting taos!")
+        return
+    print(
+        "It looks like there was an issue submitting the email, please "
+        "check that the environment variable SEND_GRID_API_KEY is set. "
+        "You can also visit https://www.taos.com/contact-taos to submit a request online."
+    )
+
+
+    """ Lookup Taos personell bio information. """
 
 @main.command("bio")
 @click.argument("user", type=click.Choice(bio.list_persons()))
