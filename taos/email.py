@@ -9,7 +9,7 @@ def _get_email_string(**kwargs):
             "<strong>New Contact Request</strong>",
             "New Contact request from taos-cli for {service_type}",
             "Requested by {name} at {email}."
-        
+
         ]
     ).format(**kwargs)
 
@@ -20,10 +20,10 @@ def _get_email_string2(**kwargs):
             "New Contact request from taos-cli for {service_type}",
             "Requested by {name} at {email}.",
             "For hours: {hours} , length of contract: {length}, preferred communication: {communication}"
-        
+
         ]
     ).format(**kwargs)
-      
+
 
 
 def send_message(name, email, service_type):
@@ -65,4 +65,3 @@ def send_message2(name, email, service_type, hours, length, communication ):
         print(response.headers)
     except Exception as e:
         print(str(e))
-

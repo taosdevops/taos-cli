@@ -120,6 +120,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# sphinx documentation
+docs
+
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -127,3 +130,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.pypirc
+
+# local IDE settings
+.idea
+.vscode/settings.json
