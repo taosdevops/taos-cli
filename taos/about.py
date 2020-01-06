@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
-from typing import List
-from taos import config
-import requests
 from click import style
-import re
-import string
+from taos import config
 
+from typing import List
+import re
+import requests
+import string
 
 search_link = '/about/'
 bs4_ignore_strings = [
@@ -19,7 +19,7 @@ def _get_next(predicate, object_list):
 
 
 def is_leader(tag):
-    #return leader h2 tag
+    # return leader h2 tag
     return (tag.name)
 
 
@@ -78,7 +78,6 @@ def list_services():
     response = requests.get(url, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
     services_parent = soup.find(href='/services').parent
-
 
     return [
         {"name":"","href":"/about"},
