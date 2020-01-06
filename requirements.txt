@@ -1,1 +1,3 @@
+beautifulsoup4==4.8.1
 Click==7.0
+taosdevopsutils==1.3.0

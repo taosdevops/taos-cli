@@ -1,13 +1,18 @@
 from bs4 import BeautifulSoup
-from typing import List
-from taos import config
-import requests
 from click import style
+from taos import config
+
+from typing import List
+import re
+import requests
+import string
 
 search_link = '/about/'
 bs4_ignore_strings = [
-    "\n", ' ', 'Download Taos Overview >'
+  "\n", ' ', 'Download Taos Overview >'
 ]
+
+def _bold(string:str)->str: return style(string, bold=True)
 
 def _get_next(predicate, object_list):
     return next(obj for obj in object_list if predicate(obj))
@@ -19,11 +24,10 @@ def is_leader(tag):
 
 
 def _cleanup(string: str):
-    return string.replace("\xa0", "")
+    return string.replace("\xa0","")
 
 
-
-def get_about():
+def get_about(bold=False):
     """ Returns the content of the taos about page """
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
@@ -35,10 +39,12 @@ def get_about():
         if item not in bs4_ignore_strings
     ]
 
-    return [*content,"", *get_leaders()]
+    return [*content, *get_leaders(bold=bold)]
 
 
-def get_leaders():
+
+
+def get_leaders(bold=False):
     def _build_leader(tag):
         try:
             name, title = tag.parent.select('div font')
@@ -53,11 +59,19 @@ def get_leaders():
     link = "https://taos.com/about/"
     response = requests.get(link, headers={'User-Agent': config.USER_AGENT})
     soup = BeautifulSoup(response.text, "html.parser")
+    link = soup.find(is_leader)
+
     return [
-        f"- {style(leader['title'], bold=True)}: {leader['name']}"
-        for leader in
-        [ _build_leader(item) for item in soup.select('div div h4')]
+        f"- {_bold(leader['title']) if bold else leader['title']}: {leader['name']}"
+        for leader in [
+            _build_leader(item)
+            for item in soup.select('div div h4')
+        ]
     ]
+
+def _clean_service_name(name:str)->str:
+    return name.replace("™", "").strip()\
+        .replace("&", "and").replace(" ","-").lower()
 
 def list_services():
     url = 'http://taos.com/'
@@ -69,11 +83,16 @@ def list_services():
         {"name":"","href":"/about"},
         *[
             {
-            "href": tag['href'],
-            "name": tag.span.text.strip()
+                "href": tag['href'],
+                "name": _clean_service_name(tag.span.text)
             } for tag in  services_parent.ul.select('li a')
         ]
     ]
+
+def list_service_names():
+    return [service['name'] for service in list_services()]
+
+
 
 def get_service(service):
     service_record=  _get_next(lambda item: item['name']==service, list_services())
@@ -92,22 +111,4 @@ def _parse_sub(path:str):
     return [title, body, footer]
 
 def contact_info():
-    """ Resorted to providing this block below as trying to
-        scrape the content from the web page imbeded in 15 divs
-        wasnt worth the time and effort. This probably wont change much.
-    """
-    return "\n".join([
-        'Contact info\n',
-        '888-826-7686',
-        'contactus@taos.com',
-        '121 Daggett Drive',
-        'San Jose, CA 95134',
-        'https://www.taos.com/contact-taos'
-    ])
-
-
-if __name__ == "__main__":
-    print(
-        get_about(),
-        contact_info(),
-    )
+    return " 'Contact info': 'Phone: '888-826-7686', 'contactus@taos.com', '121 Daggett Drive','San Jose, CA 95134'"
