@@ -8,7 +8,7 @@ import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
-print(f"DEBUG::"
+print(f"DEBUG::")
 print(f"Slack API Token: {config.SLACK_API_TOKEN}")
 bot = Bot(config.SLACK_API_TOKEN, logger=logging)
 
