@@ -14,3 +14,6 @@ Create a branch
 create pr
 ???
 profit!
+
+
+[Read The Docs](https://taos-cli.readthedocs.io/en/latest/?)
