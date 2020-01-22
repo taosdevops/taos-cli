@@ -1,5 +1,6 @@
 import click
 import requests
+
 from taos import about, bio, config
 from taos.email import send_message
 
@@ -13,22 +14,23 @@ def main(ctx):
 
 @main.command("about")
 @click.argument(
-    "link", default="",
-    type=click.Choice([service['name'] for service in about.list_services()])
+    "link",
+    default="",
+    type=click.Choice([service["name"] for service in about.list_services()]),
 )
 def get_about(link):
     """ Looking at Taos Who We Are """
-    header, *body = about.get_about(bold=True) if not link else about.get_service(link)
+    header, * \
+        body = about.get_about(
+            bold=True) if not link else about.get_service(link)
     click.echo()
     click.echo(click.style(header, bold=True))
     click.echo()
-    click.echo('\n'.join(body))
+    click.echo("\n".join(body))
     click.echo()
     click.echo(
-        "We also provide a range of services, run taos about SERVICE for more."
-    )
-    click.echo('\n'.join(about.list_service_names()))
-
+        "We also provide a range of services, run taos about SERVICE for more.")
+    click.echo("\n".join(about.list_service_names()))
 
 
 @click.option(
@@ -37,29 +39,33 @@ def get_about(link):
 )
 @click.option("--email", prompt="What is your Email?")
 @click.option("--name", prompt="What is your name?")
-
-@main.command('subscribe')
+@main.command("subscribe")
 def subscribe(name, email, hours, length, communication):
     print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
 
-@main.command('contact')
+
+@main.command("contact")
 def contact(name, email, service_type):
     click.echo(about.contact_info())
     print(f"contact, {name}, {email}, {service_type}")
 
+
 @main.command("bio")
 @click.argument("user", type=click.Choice(bio.list_persons()))
-
-@click.option("--communication", prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)")
+@click.option(
+    "--communication",
+    prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)",
+)
 @click.option("--length", prompt="Length of Service?")
 @click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
 @click.option("--email", prompt="What is your Email?")
 @click.option("--name", prompt="What is your name?")
-@main.command('subscribe')
+@main.command("subscribe")
 def subscribe(name, email, hours, length, communication):
     print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
 
     """ Lookup Taos personell bio information. """
+
 
 @main.command("bio")
 @click.argument("user", type=click.Choice(bio.list_persons()))
