@@ -1,8 +1,6 @@
 import click
-import requests
 
-from taos import about, bio, config
-from taos.email import send_message
+from taos import about, bio
 
 
 @click.group()
@@ -37,6 +35,8 @@ def get_about(link):
     "--service-type",
     prompt="which services are you interested in <provide a list of MS PS NOC DON etc>?",
 )
+@click.option("--length", prompt="Length of Service?")
+@click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
 @click.option("--email", prompt="What is your Email?")
 @click.option("--name", prompt="What is your name?")
 @main.command("subscribe")
@@ -56,13 +56,8 @@ def contact(name, email, service_type):
     "--communication",
     prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)",
 )
-@click.option("--length", prompt="Length of Service?")
-@click.option("--hours", prompt="How Many Monthly Hours Are You Interested In?")
-@click.option("--email", prompt="What is your Email?")
-@click.option("--name", prompt="What is your name?")
-@main.command("subscribe")
-def subscribe(name, email, hours, length, communication):
-    print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
+def bio_setup(user):
+    print(f"bio_setup, {user}")
 
     """ Lookup Taos personell bio information. """
 

@@ -10,9 +10,7 @@ bot = Bot(config.SLACK_API_TOKEN, logger=logging)
 bio_users = bio.list_persons()
 about_services = [
     service["name"]
-
     for service in about.list_services()
-
     if service.get("name") and service["name"] != ""
 ]
 
@@ -78,8 +76,7 @@ def _parse_contact(command_name, *args, thread_id=None, parameters=None, partial
 
     compiled = {**(partial["params"] if partial else {}), **parameters}
 
-    valid = {param: compiled[param]
-             for param in params.keys() if param in compiled}
+    valid = {param: compiled[param] for param in params.keys() if param in compiled}
 
     has_all_params = len(valid.keys()) == len(params.keys())
     already_sent = partial["state"].get("sent") == True if partial else False
@@ -97,8 +94,7 @@ def _parse_contact(command_name, *args, thread_id=None, parameters=None, partial
         return "\n".join(
             [
                 "Data so far:",
-                *[f"> {key}: {value}" for key,
-                    value in partial["params"].items()],
+                *[f"> {key}: {value}" for key, value in partial["params"].items()],
             ]
         )
 
@@ -131,8 +127,7 @@ def _parse_contact(command_name, *args, thread_id=None, parameters=None, partial
             [
                 "Thanks for wanting to provide feedback to Taos."
                 "Please provide the following information.",
-                *[f"- {param}: {help_text}" for param,
-                    help_text in params.items()],
+                *[f"- {param}: {help_text}" for param, help_text in params.items()],
                 "Example:",
                 "> --email devopsnow@taos.com",
                 "You can also say help for more information.",
