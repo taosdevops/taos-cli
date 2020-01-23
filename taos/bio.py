@@ -1,3 +1,7 @@
+"""
+Implementation of user fetching from github content
+
+"""
 from typing import List
 
 import requests

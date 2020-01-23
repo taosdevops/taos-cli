@@ -1,3 +1,11 @@
+"""
+Email Module:
+    Email module provides the ability to send emails to Taos
+    as the client requests them. It requires a SEND_GRID_API_KEY in order
+    to function
+
+"""
+
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 

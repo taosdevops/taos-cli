@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Taos Command Line Interface Package &mdash; Taos Command Line Interface 1.1.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Taos Command Line Interface’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Taos Command Line Interface
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Taos Command Line Interface Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-taos.about">taos.about module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-taos.bio">taos.bio module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-taos.bot">taos.bot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#taos-cli-module">taos.cli module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#git">git</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#git-about">about</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-bio">bio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-contact">contact</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-subscribe">subscribe</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-taos.config">taos.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-taos.email">taos.email module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-taos">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Taos Command Line Interface</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Taos Command Line Interface Package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/taos.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="taos-command-line-interface-package">
+<h1>Taos Command Line Interface Package<a class="headerlink" href="#taos-command-line-interface-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-taos.about">
+<span id="taos-about-module"></span><h2>taos.about module<a class="headerlink" href="#module-taos.about" title="Permalink to this headline">¶</a></h2>
+<p>Implementation of biography information from Github for DevOps Now members</p>
+<dl class="function">
+<dt id="taos.about.contact_info">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">contact_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#contact_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.contact_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.about.get_about">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">get_about</code><span class="sig-paren">(</span><em class="sig-param">bold=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#get_about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.get_about" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the content of the taos about page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="taos.about.get_leaders">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">get_leaders</code><span class="sig-paren">(</span><em class="sig-param">bold=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#get_leaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.get_leaders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.about.get_service">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">get_service</code><span class="sig-paren">(</span><em class="sig-param">service</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#get_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.get_service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.about.is_leader">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">is_leader</code><span class="sig-paren">(</span><em class="sig-param">tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#is_leader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.is_leader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.about.list_service_names">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">list_service_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#list_service_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.list_service_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.about.list_services">
+<code class="sig-prename descclassname">taos.about.</code><code class="sig-name descname">list_services</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/about.html#list_services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.about.list_services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-taos.bio">
+<span id="taos-bio-module"></span><h2>taos.bio module<a class="headerlink" href="#module-taos.bio" title="Permalink to this headline">¶</a></h2>
+<p>Implementation of user fetching from github content</p>
+<dl class="function">
+<dt id="taos.bio.get_user">
+<code class="sig-prename descclassname">taos.bio.</code><code class="sig-name descname">get_user</code><span class="sig-paren">(</span><em class="sig-param">user: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/taos/bio.html#get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.bio.get_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.bio.is_member">
+<code class="sig-prename descclassname">taos.bio.</code><code class="sig-name descname">is_member</code><span class="sig-paren">(</span><em class="sig-param">tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/bio.html#is_member"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.bio.is_member" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="taos.bio.list_persons">
+<code class="sig-prename descclassname">taos.bio.</code><code class="sig-name descname">list_persons</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/taos/bio.html#list_persons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.bio.list_persons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-taos.bot">
+<span id="taos-bot-module"></span><h2>taos.bot module<a class="headerlink" href="#module-taos.bot" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Integration with Slack is provided by this module.</dt><dd><p>This module uses SLACK_API_TOKEN in order to integrate and interact with Slack</p>
+</dd>
+</dl>
+<dl class="function">
+<dt id="taos.bot.run_bot">
+<code class="sig-prename descclassname">taos.bot.</code><code class="sig-name descname">run_bot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/bot.html#run_bot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.bot.run_bot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="taos-cli-module">
+<h2>taos.cli module<a class="headerlink" href="#taos-cli-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="git">
+<h3>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h3>
+<p>Taos cli command</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<div class="section" id="git-about">
+<h4>about<a class="headerlink" href="#git-about" title="Permalink to this headline">¶</a></h4>
+<p>Looking at Taos Who We Are</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git about <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[[</span><span class="p">|</span>managed-cloud-and-infrastructure<span class="p">|</span>hybrid-cloud<span class="p">|</span>devops-
+          now<span class="p">|</span>design-and-resolution-engineering<span class="p">|</span><span class="m">24</span>/7-operations<span class="p">|</span>professional-
+          services<span class="p">|</span>cloud-migration<span class="p">|</span>strategy<span class="p">|</span>consulting<span class="p">|</span>end-user-support<span class="p">|</span>cloud-
+          expense-management<span class="o">]]</span>
+</pre></div>
+</div>
+<p class="rubric">Arguments</p>
+<dl class="option">
+<dt id="cmdoption-git-about-arg-link">
+<code class="sig-name descname">LINK</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-git-about-arg-link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="git-bio">
+<h4>bio<a class="headerlink" href="#git-bio" title="Permalink to this headline">¶</a></h4>
+<p>Lookup Taos personell bio information.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git bio <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>aearl0530<span class="p">|</span>amcchesney-taos<span class="p">|</span>cmorrowTaos<span class="p">|</span>jmiceli-taos<span class="p">|</span>rmeyer-
+        taos<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Arguments</p>
+<dl class="option">
+<dt id="cmdoption-git-bio-arg-user">
+<code class="sig-name descname">USER</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-git-bio-arg-user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="git-contact">
+<h4>contact<a class="headerlink" href="#git-contact" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git contact <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="git-subscribe">
+<h4>subscribe<a class="headerlink" href="#git-subscribe" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git subscribe <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="option">
+<dt id="cmdoption-git-subscribe-name">
+<code class="sig-name descname">--name</code><code class="sig-prename descclassname"> &lt;name&gt;</code><a class="headerlink" href="#cmdoption-git-subscribe-name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-git-subscribe-email">
+<code class="sig-name descname">--email</code><code class="sig-prename descclassname"> &lt;email&gt;</code><a class="headerlink" href="#cmdoption-git-subscribe-email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-git-subscribe-hours">
+<code class="sig-name descname">--hours</code><code class="sig-prename descclassname"> &lt;hours&gt;</code><a class="headerlink" href="#cmdoption-git-subscribe-hours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-git-subscribe-length">
+<code class="sig-name descname">--length</code><code class="sig-prename descclassname"> &lt;length&gt;</code><a class="headerlink" href="#cmdoption-git-subscribe-length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-git-subscribe-service-type">
+<code class="sig-name descname">--service-type</code><code class="sig-prename descclassname"> &lt;service_type&gt;</code><a class="headerlink" href="#cmdoption-git-subscribe-service-type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="module-taos.config">
+<span id="taos-config-module"></span><h2>taos.config module<a class="headerlink" href="#module-taos.config" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Configuration Module:</dt><dd><p>Config module loads commonly used environment variables
+for Taos CLI usage</p>
+<ul class="simple">
+<li><p>TAOS_WEB_USER_AGENT</p></li>
+<li><p>SUPPORT_EMAIL</p></li>
+<li><p>CONTACT_EMAIL</p></li>
+<li><p>CONTACT_ENDPOINT</p></li>
+<li><p>CONTACT_WEB_SITE</p></li>
+<li><p>SEND_GRID_API_KEY</p></li>
+<li><p>SLACK_API_TOKEN</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-taos.email">
+<span id="taos-email-module"></span><h2>taos.email module<a class="headerlink" href="#module-taos.email" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Email Module:</dt><dd><p>Email module provides the ability to send emails to Taos
+as the client requests them. It requires a SEND_GRID_API_KEY in order
+to function</p>
+</dd>
+</dl>
+<dl class="function">
+<dt id="taos.email.send_message">
+<code class="sig-prename descclassname">taos.email.</code><code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">email</em>, <em class="sig-param">name</em>, <em class="sig-param">message_type='contact'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taos/email.html#send_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taos.email.send_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-taos">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-taos" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Taos Command Line Interface’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Taos Dev Ops Now
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

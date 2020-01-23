@@ -1,3 +1,18 @@
+"""
+Configuration Module:
+    Config module loads commonly used environment variables
+    for Taos CLI usage
+
+    - TAOS_WEB_USER_AGENT
+    - SUPPORT_EMAIL
+    - CONTACT_EMAIL
+    - CONTACT_ENDPOINT
+    - CONTACT_WEB_SITE
+    - SEND_GRID_API_KEY
+    - SLACK_API_TOKEN
+
+"""
+
 import os
 
 USER_AGENT = os.getenv("TAOS_WEB_USER_AGENT", "Mozilla/5.0")

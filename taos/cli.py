@@ -1,3 +1,8 @@
+"""
+Command Line Interface Module:
+    Click powered module provides cli options for taos-cli
+"""
+
 import click
 
 from taos import about, bio

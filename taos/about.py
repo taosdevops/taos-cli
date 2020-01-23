@@ -1,3 +1,8 @@
+"""
+Implementation of biography information from Github for DevOps Now members
+
+"""
+
 import requests
 from bs4 import BeautifulSoup
 from click import style

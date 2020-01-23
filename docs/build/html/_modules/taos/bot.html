@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>taos.bot &mdash; Taos Command Line Interface 1.1.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Taos Command Line Interface
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../taos.html">Taos Command Line Interface Package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Taos Command Line Interface</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>taos.bot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for taos.bot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Integration with Slack is provided by this module.</span>
+<span class="sd">    This module uses SLACK_API_TOKEN in order to integrate and interact with Slack</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">taosdevopsutils.slack</span> <span class="kn">import</span> <span class="n">Bot</span>
+
+<span class="kn">from</span> <span class="nn">taos</span> <span class="kn">import</span> <span class="n">about</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">email</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SLACK_API_TOKEN</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logging</span><span class="p">)</span>
+
+<span class="n">bio_users</span> <span class="o">=</span> <span class="n">bio</span><span class="o">.</span><span class="n">list_persons</span><span class="p">()</span>
+<span class="n">about_services</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">service</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">about</span><span class="o">.</span><span class="n">list_services</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">service</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">service</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+<span class="p">]</span>
+
+
+<span class="nd">@bot</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;about&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_parse_about</span><span class="p">(</span><span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">thread_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">payload</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">newline_join</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">partial_commands</span><span class="p">[</span><span class="n">thread_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;command_name&quot;</span><span class="p">:</span> <span class="s2">&quot;about&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">newline_join</span><span class="p">([</span><span class="s2">&quot;Thanks for asking about me.&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">about</span><span class="o">.</span><span class="n">get_about</span><span class="p">()])</span>
+
+    <span class="n">services_found</span> <span class="o">=</span> <span class="p">[</span><span class="n">service</span> <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">about_services</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">services_found</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;Sorry I dont know anything about {&#39; &#39;.join(args)}.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;These are the services that I do know about.&quot;</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{service}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">about_services</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">newline_join</span><span class="p">(</span><span class="n">about</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="n">service</span><span class="p">))</span> <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">services_found</span><span class="p">]</span>
+
+
+<span class="nd">@bot</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;bio&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_parse_bio</span><span class="p">(</span><span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">thread_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">payload</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">partial_commands</span><span class="p">[</span><span class="n">thread_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;command_name&quot;</span><span class="p">:</span> <span class="s2">&quot;bio&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="s2">&quot;Whos bio would you like to see?&quot;</span>
+
+    <span class="n">bios_found</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">bio_users</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bios_found</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;Sorry we couldnt find the users that you posted.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;These are the bios that I could locate.&quot;</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{bio_user}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">bio_user</span> <span class="ow">in</span> <span class="n">bio_users</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">bio</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">bios_found</span><span class="p">]</span>
+
+
+<span class="nd">@bot</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;contact&quot;</span><span class="p">)</span>
+<span class="nd">@bot</span><span class="o">.</span><span class="n">fetch_partial</span>
+<span class="k">def</span> <span class="nf">_parse_contact</span><span class="p">(</span><span class="n">command_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">thread_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Partial&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Args&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters&quot;</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;threadid&quot;</span><span class="p">,</span> <span class="n">thread_id</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">thread_id</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;Email Address&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Person to contact&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;service-type&quot;</span><span class="p">:</span> <span class="s2">&quot;What services are you looking assistance with?&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">compiled</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="p">(</span><span class="n">partial</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">partial</span> <span class="k">else</span> <span class="p">{}),</span> <span class="o">**</span><span class="n">parameters</span><span class="p">}</span>
+
+    <span class="n">valid</span> <span class="o">=</span> <span class="p">{</span><span class="n">param</span><span class="p">:</span> <span class="n">compiled</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
+             <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">compiled</span><span class="p">}</span>
+
+    <span class="n">has_all_params</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">already_sent</span> <span class="o">=</span> <span class="n">partial</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sent&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">partial</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;help&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">already_sent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;Contact request already created with this thread.&quot;</span>
+                    <span class="s2">&quot;Please start a new thread with&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;&gt; @Bot contact&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;Data so far:&quot;</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&gt; </span><span class="si">{key}</span><span class="s2">: </span><span class="si">{value}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="n">value</span> <span class="ow">in</span> <span class="n">partial</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">already_sent</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">has_all_params</span><span class="p">:</span>  <span class="c1"># Have all the keys</span>
+        <span class="k">if</span> <span class="n">partial</span><span class="p">:</span>
+            <span class="n">partial</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;sent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">email</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+            <span class="n">email</span><span class="o">=</span><span class="n">valid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">valid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+            <span class="n">service_type</span><span class="o">=</span><span class="n">valid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;service-type&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;Thanks for the notification request!&quot;</span>
+
+    <span class="k">if</span> <span class="n">already_sent</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">partial</span><span class="p">:</span>
+        <span class="n">partial</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;command_name&quot;</span><span class="p">:</span> <span class="s2">&quot;contact&quot;</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">valid</span><span class="p">,</span> <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">partial_commands</span><span class="p">[</span><span class="n">thread_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">partial</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">partial</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Create partial and return instructions</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;Thanks for wanting to provide feedback to Taos.&quot;</span>
+                <span class="s2">&quot;Please provide the following information.&quot;</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{param}</span><span class="s2">: </span><span class="si">{help_text}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">param</span><span class="p">,</span>
+                    <span class="n">help_text</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
+                <span class="s2">&quot;Example:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;&gt; --email devopsnow@taos.com&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;You can also say help for more information.&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Thanks for providing: {&#39;, &#39;.join(parameters.keys())}.&quot;</span>
+
+
+<div class="viewcode-block" id="run_bot"><a class="viewcode-back" href="../../taos.html#taos.bot.run_bot">[docs]</a><span class="k">def</span> <span class="nf">run_bot</span><span class="p">():</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_bot</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Taos Dev Ops Now
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

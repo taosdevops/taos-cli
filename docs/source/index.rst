@@ -10,7 +10,7 @@ Welcome to Taos Command Line Interface's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   dude
+   taos
 
 
 
