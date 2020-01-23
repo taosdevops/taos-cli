@@ -38,12 +38,17 @@ def get_about(link):
 @click.option("--email", prompt="What is your Email?")
 @click.option("--name", prompt="What is your name?")
 
+@main.command('subscribe')
+def subscribe(name, email, hours, length, communication):
+    print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
 
 @main.command('contact')
 def contact(name, email, service_type):
     click.echo(about.contact_info())
     print(f"contact, {name}, {email}, {service_type}")
 
+@main.command("bio")
+@click.argument("user", type=click.Choice(bio.list_persons()))
 
 @click.option("--communication", prompt="What is your teams primary form of communication? (Ex: Slack, Managed Services, etc)")
 @click.option("--length", prompt="Length of Service?")
@@ -54,6 +59,7 @@ def contact(name, email, service_type):
 def subscribe(name, email, hours, length, communication):
     print(f"subscribe, {name}, {email}, {hours}, {length}, {communication}")
 
+    """ Lookup Taos personell bio information. """
 
 @main.command("bio")
 @click.argument("user", type=click.Choice(bio.list_persons()))
