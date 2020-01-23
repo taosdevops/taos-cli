@@ -11,8 +11,8 @@ Welcome to Taos Command Line Interface's documentation!
    :caption: Contents:
 
    taos
-
-
+   config
+   submodules
 
 Indices and tables
 ==================

@@ -1,5 +1,5 @@
-Taos Command Line Interface Package
-===================================
+Taos Command Line
+=================
 
 .. click:: taos.cli:main
    :prog: taos
