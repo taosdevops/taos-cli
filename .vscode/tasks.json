@@ -45,7 +45,7 @@
                 "panel": "new"
             },
             "options": {
-                "cwd": "${workspaceRoot}/docs"
+                "cwd": "${workspaceRoot}/.docs"
             }
         },
         {
@@ -55,8 +55,8 @@
             "args": [
                 "-m",
                 "sphinx",
-                ".docs",
-                "docs"
+                "docs",
+                ".docs"
             ],
             "group": "test",
             "presentation": {
