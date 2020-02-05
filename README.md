@@ -1,5 +1,10 @@
 # taos
-taos command line
+
+[![Actions Status](https://github.com/taosdevops/taos-cli/workflows/Test/badge.svg)](https://github.com/taosdevops/taos-cli/actions)
+[![Actions Status](https://readthedocs.org/projects/taos-cli/badge/?version=latest)](https://github.com/taosdevops/taos-cli/actions)
+
+[Read The Docs](https://taos-cli.readthedocs.io/en/latest/?)
+
 
 ## Development
 
@@ -11,6 +16,7 @@ Create a branch
 
 `git checkout ?`
 
+
 ### Branching
 - bug/    - random bugfixes
 - feat/    - random feature requests
@@ -18,28 +24,36 @@ Create a branch
 - ticket/ - for working an assigned jira ticket
 
 
-create pr
-???
-profit!
+### Contributing
+
+- create pr
+- ???
+- profit!
 
 
-[Read The Docs](https://taos-cli.readthedocs.io/en/latest/?)
+## The Taos Bot
 
-[![Actions Status](https://github.com/taosdevops/taos-cli/workflows/Test/badge.svg)](https://github.com/taosdevops/taos-cli/actions)
-[![Actions Status](https://readthedocs.org/projects/taos-cli/badge/?version=latest)](https://github.com/taosdevops/taos-cli/actions)
+*Note:* You must have a slack token exposed at environment variable
+`SLACK_API_TOKEN`.
 
-Taos command line utility.
+The bot has been created and can be ran by:
+- `pip install taos`
+- `export SLACK_API_TOKEN=SOMETOKEN`
+- `python -m taos.bot`
+
+Alternatively you can run the docker container by using:
+`docker run --rm -it -e "SLACK_API_TOKEN=$env:SLACK_API_TOKEN" --name taosbot amcchesneytaos/taosbot:latest`
 
 
 ## Document Generation
 
 In order to generate the docs, make sure you have the `dev.requirements.txt` set of pips installed.
 
-After installing them
-- `cd docs`
-- `make html`
+- `pipenv install --dev`
+- `pipenv shell`
+- `python -m sphinx docs .docs`
 
-
-There is a catch that unless you have a `SLACK_API_TOKEN` set, the [bot.py](./taos/bot.py)
-documentation will not generate. This is due to the blind call to test authentications.
-One can either set the token or catch the error.
+There is a catch that unless you have a `SLACK_API_TOKEN` set, the
+[bot.py](./taos/bot.py) documentation will not generate. This is due to the
+blind call to test authentications. One can either set the token or catch the
+error.

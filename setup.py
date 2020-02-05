@@ -11,7 +11,13 @@ setup(
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
     version="1.1.0",
     url="https://github.com/taosdevops/taos",
-    install_requires=["Click==7.0", ],
+    install_requires=[
+        "beautifulsoup4~=4.8",
+        "Click~=7.0",
+        "sendgrid~=6.1",
+        "slackclient~=2.2",
+        "taosdevopsutils~=1.3",
+    ],
     entry_points="""
         [console_scripts]
         taos=taos.cli:main
